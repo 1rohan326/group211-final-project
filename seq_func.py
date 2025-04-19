@@ -47,6 +47,50 @@ def generate_corrupted_sequence(level, num_corrupt):
 length = 3 + level
 sequence = [str(random.randint(0,9))for _ in range(length)]
     return sequence
+    
+#Rohan Julien Function
+def assess_guess(player_input, target_sequence):
+    """
+    Compares the player's input to the sequence and generates result details.
+
+    Parameters:
+        player_input: The input provided by the player int.
+        target_sequence: The correct answer to evaluate against int.
+
+    Returns:
+        dict: Contains:
+            - 'correct': True if entire guess is right.
+            - 'feedback': List of per digit match.
+            - 'hints': hints where mismatches occurred.
+            - 'score': Ratio of correct digits to total.
+    """
+    if len(player_input) != len(target_sequence):
+        raise ValueError("Input and target must be of same length.")
+
+
+    feedback = [a == b for a, b in zip(player_input, target_sequence)]
+    correct_count = sum(feedback)
+    hints = [i for i, matched in enumerate(feedback) if not matched]
+
+    return {
+        "correct": correct_count == len(target_sequence),
+        "feedback": feedback,
+        "hints": hints,
+        "score": correct_count / len(target_sequence)
+    }
+
+
+# Mock data
+target = "1234"  # The correct sequence to guess
+guesses = ["1234", "1245", "1334", "1111", "5678"]  # A list of player's guesses
+
+# Iterate through each guess and evaluate using the function
+for guess in guesses:
+    print(f"Guess: {guess}")
+    result = assess_guess(guess, target)
+    print(f"Result: {result}")
+    print("-" * 30)
+
 #Conor McHugh Function
 def count_strikes(user_input, correct_sequence, current_strikes, max_strikes=3):
     """
