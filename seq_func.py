@@ -1,6 +1,46 @@
 import random
 
-# function for updating length of sequence and corrupted sequence
+
+# Brikti's function to generate and corrupt digit sequence
+def generate_corrupted_sequence(level, num_corrupt):
+    """
+    Generates a random digit sequence and corrupts some digits to simulate a memory glitch.
+
+    Parameters:
+        level (int): Determines the length of the original sequence.
+        num_corrupt (int): Number of digits to corrupt in the sequence.
+
+    Returns:
+        tuple: (original_sequence, corrupted_sequence)
+            - original_sequence (list of str): The correct sequence.
+            - corrupted_sequence (list of str): The sequence with some digits changed.
+
+    Raises:
+        ValueError: If inputs are invalid (e.g. negative level or too many corruptions).
+    """
+    if level < 0:
+        raise ValueError("Level must be non-negative.")
+    if num_corrupt < 0:
+        raise ValueError("Number of corrupt digits must be non-negative.")
+
+    length = 3 + level  # base length + level scaling
+    if num_corrupt > length:
+        raise ValueError("Cannot corrupt more digits than exist in the sequence.")
+
+    original_sequence = [str(random.randint(0, 9)) for _ in range(length)]
+    corrupted_sequence = original_sequence.copy()
+
+    corrupt_indices = random.sample(range(length), num_corrupt)
+
+    for index in corrupt_indices:
+        original_digit = corrupted_sequence[index]
+        new_digit = str(random.randint(0, 9))
+        while new_digit == original_digit:
+            new_digit = str(random.randint(0, 9))
+        corrupted_sequence[index] = new_digit
+
+    return original_sequence, corrupted_sequence
+
 
 
 # Function will cause an error because it hasn't been initialized
